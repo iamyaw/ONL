@@ -29,6 +29,10 @@ else
 include $(ONL)/make/config.mk
 endif
 
+ifndef IMG_SIZE
+IMG_SIZE=2097152
+endif
+
 .DEFAULT_GOAL := all
 
 # Pull loader from the repo
@@ -43,7 +47,7 @@ $(SWI):
 # Create hda image with integrated SWI
 onl-i386.img: $(SWI)
 	rm -f $@
-	mkdosfs -F 32 -C $@ 2097152
+	mkdosfs -F 32 -C $@ $(IMG_SIZE)
 	mcopy -i $@ $(SWI) ::onl-i386.swi
 	echo "SWI=flash:onl-i386.swi" > boot-config
 	echo "NETDEV=ma1" >> boot-config
